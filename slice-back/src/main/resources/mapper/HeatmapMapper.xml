@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slice.mapper.HeatmapMapper">
+
+    <resultMap type="com.slice.pojo.entity.Heatmap" id="HeatmapMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="data" column="data" jdbcType="LONGVARCHAR"/>
+        <result property="rows" column="rows" jdbcType="INTEGER"/>
+        <result property="cols" column="cols" jdbcType="INTEGER"/>
+        <result property="sliceId" column="slice_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="HeatmapMap">
+        select *
+        from heatmap
+        where id = #{id}
+    </select>
+
+    <select id="queryBySId" resultMap="HeatmapMap">
+        select id, `data`, `rows` , `cols` , `slice_id`
+        from `heatmap`
+        where slice_id = #{sliceId};
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into heatmap(`data`, `rows` , `cols` ,slice_id)
+        values (#{data},#{rows},#{cols},#{sliceId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into heatmap(datarowscolsslice_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.data}#{entity.rows}#{entity.cols}#{entity.sliceId})
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update heatmap
+        <set>
+            <if test="data != null and data != ''">
+                data = #{data},
+            </if>
+            <if test="rows != null">
+                rows = #{rows},
+            </if>
+            <if test="cols != null">
+                cols = #{cols},
+            </if>
+            <if test="sliceId != null">
+                slice_id = #{sliceId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from heatmap
+        where id = #{id}
+    </delete>
+
+</mapper>
+
+

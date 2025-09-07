@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slice.mapper.SliceMapper">
+
+    <resultMap type="com.slice.pojo.entity.Slice" id="SliceMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="photoPath" column="photo_path" jdbcType="VARCHAR"/>
+        <result property="statusId" column="status_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="applicationId" column="application_id" jdbcType="INTEGER"/>
+        <result property="uploadTime" column="upload_time" jdbcType="TIMESTAMP"/>
+        <result property="incidence" column="incidence" jdbcType="NUMERIC"/>
+        <result property="slicesPath" column="slices_path" jdbcType="VARCHAR"/>
+        <result property="width" column="width" jdbcType="INTEGER"/>
+        <result property="height" column="height" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="SliceCSVMap" type="com.slice.pojo.dto.SliceCSV">
+        <result property="sliceName" column="sliceName" jdbcType="VARCHAR"/>
+        <result property="uploadTime" column="upload_time" jdbcType="TIMESTAMP"/>
+        <result property="incidence" column="incidence" jdbcType="DOUBLE"/>
+        <result property="result" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SliceMap">
+        select *
+        from slice
+        where id = #{id}
+    </select>
+    <select id="getResult" resultType="com.slice.pojo.dto.SliceResult">
+        SELECT d.type, d.name, s.incidence
+        FROM slice s
+        JOIN disease d ON s.status_id = d.id
+        WHERE s.id = #{id}
+
+    </select>
+    <select id="queryByUserId" resultType="com.slice.pojo.entity.Slice">
+        select *
+        from slice
+        where user_id = #{id}
+    </select>
+    <select id="queryByUIdAndAId" resultType="com.slice.pojo.entity.Slice">
+        select *
+        from slice
+        where user_id = #{userId} and application_id = #{applicationId}
+    </select>
+    <select id="getCSV" resultType="com.slice.pojo.dto.SliceCSV" resultMap="SliceCSVMap">
+        SELECT s.name as sliceName, s.upload_time, incidence, disease.name
+        FROM (
+                 SELECT *
+                 FROM slice
+                 WHERE slice.id IN
+                 <foreach collection="sliceIds" item="sliceId" open="(" close=")" separator=",">
+                     #{sliceId}
+                 </foreach>
+             ) AS s
+        JOIN disease ON s.status_id = disease.id;
+
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into slice(namephoto_pathstatus_iduser_idapplication_idupload_timeincidence)
+        values (#{name}#{photoPath}#{statusId}#{userId}#{applicationId}#{uploadTime}#{incidence})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into slice(photo_path,user_id,application_id,upload_time, slices_path, width, height)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.photoPath},#{entity.userId},#{entity.applicationId},#{entity.uploadTime},#{entity.slicesPath}, #{entity.width}, #{entity.height})
+        </foreach>
+    </insert>
+
+
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update slice
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="photoPath != null and photoPath != ''">
+                photo_path = #{photoPath},
+            </if>
+            <if test="statusId != null">
+                status_id = #{statusId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="applicationId != null">
+                application_id = #{applicationId},
+            </if>
+            <if test="uploadTime != null">
+                upload_time = #{uploadTime},
+            </if>
+            <if test="incidence != null">
+                incidence = #{incidence},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from slice
+        where id = #{id}
+    </delete>
+
+</mapper>
+
+

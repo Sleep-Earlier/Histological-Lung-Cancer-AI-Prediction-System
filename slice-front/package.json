@@ -1,0 +1,50 @@
+{
+  "name": "front-end",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "postinstall": "patch-package"
+  },
+  "dependencies": {
+    "@annotorious/annotorious": "^3.0.9",
+    "@annotorious/plugin-tools": "^1.0.1",
+    "@element-plus/icons-vue": "^2.3.1",
+    "@types/openseadragon": "^3.0.10",
+    "@types/uuid": "^10.0.0",
+    "axios": "^1.7.7",
+    "colormap": "^2.3.2",
+    "element-plus": "^2.8.4",
+    "front-end": "file:",
+    "heatmap.js": "^2.0.5",
+    "js-cookie": "^3.0.5",
+    "nprogress": "^0.2.0",
+    "openseadragon": "^4.1.1",
+    "patch-package": "^8.0.0",
+    "unplugin-icons": "^0.19.3",
+    "unplugin-vue-components": "^0.27.4",
+    "uuid": "^10.0.0",
+    "vue": "^3.4.37",
+    "vue-router": "^4.4.5",
+    "vuex": "^4.0.2",
+    "geotiff-tilesource": "^2.0.2"
+  },
+  "devDependencies": {
+    "@annotorious/openseadragon": "^3.0.9",
+    "@iconify-json/gis": "^1.2.0",
+    "@iconify-json/ion": "^1.2.0",
+    "@iconify-json/mdi": "^1.2.0",
+    "@iconify-json/mynaui": "^1.2.4",
+    "@iconify-json/ph": "^1.2.0",
+    "@types/colormap": "^2.3.4",
+    "@types/heatmap.js": "^2.0.41",
+    "@vitejs/plugin-vue": "^5.1.2",
+    "openseadragon": "4.1.1",
+    "sass": "^1.79.4",
+    "vite": "^5.4.1",
+    "vite-plugin-mock": "^3.0.2"
+  }
+}

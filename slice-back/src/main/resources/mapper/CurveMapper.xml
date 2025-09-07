@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slice.mapper.CurveMapper">
+
+    <resultMap type="com.slice.pojo.entity.Curve" id="CurveMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="points" column="points" jdbcType="LONGVARCHAR"/>
+        <result property="rows" column="rows" jdbcType="INTEGER"/>
+        <result property="cols" column="cols" jdbcType="INTEGER"/>
+        <result property="sliceId" column="slice_id" jdbcType="INTEGER"/>
+        <result property="minX" column="min_x" jdbcType="DOUBLE"/>
+        <result property="minY" column="min_y" jdbcType="DOUBLE"/>
+        <result property="maxX" column="max_x" jdbcType="DOUBLE"/>
+        <result property="maxY" column="max_y" jdbcType="DOUBLE"/>
+    </resultMap>
+
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CurveMap">
+        select *
+        from curve
+        where id = #{id}
+    </select>
+
+    <select id="queryBySId" resultMap= "CurveMap">
+        select *
+        from curve
+        where slice_id = #{sliceId}
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into curve(points, `rows`, `cols`, slice_id)
+        values
+            (#{points}, #{rows}, #{cols}, #{sliceId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into curve(points, `rows`, `cols`, slice_id, min_x, min_y, max_x, max_y)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.points}, #{entity.rows}, #{entity.cols}, #{entity.sliceId}, #{entity.minX}, #{entity.minY}, #{entity.maxX}, #{entity.maxY})
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update curve
+        <set>
+            <if test="points != null and points != ''">
+                points = #{points},
+            </if>
+            <if test="rows != null">
+                rows = #{rows},
+            </if>
+            <if test="cols != null">
+                cols = #{cols},
+            </if>
+            <if test="sliceId != null">
+                slice_id = #{sliceId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from curve
+        where id = #{id}
+    </delete>
+
+</mapper>
+
+

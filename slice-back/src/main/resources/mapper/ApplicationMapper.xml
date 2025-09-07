@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slice.mapper.ApplicationMapper">
+
+    <resultMap type="com.slice.pojo.entity.Application" id="ApplicationMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="describe" column="describe" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ApplicationMap">
+        select idnamedescribe
+        from application
+        where id = #{id}
+    </select>
+    <select id="queryByUserId" resultType="com.slice.pojo.entity.Application">
+        select *
+        from application
+        where id in (select application_id
+                     from user_application
+                     where user_id = #{id})
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into application(namedescribe)
+        values (#{name}#{describe})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into application(namedescribe)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}#{entity.describe})
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update application
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="describe != null and describe != ''">
+                describe = #{describe},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from application
+        where id = #{id}
+    </delete>
+
+</mapper>
+
+

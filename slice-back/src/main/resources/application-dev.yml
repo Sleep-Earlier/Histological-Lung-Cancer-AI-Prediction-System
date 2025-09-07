@@ -1,0 +1,14 @@
+spring:
+  security:
+    patterns:
+      - /**
+      - /user/get
+      - /user/login
+      - /user/register
+      - /application/queryByPage
+      - /slice/getResult
+      - /slice/insert
+      - /slice/analysis
+      - /slice/queryByPage
+      - /slice/getSliceResult
+      - /slices/**

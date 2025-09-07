@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slice.mapper.CommentMapper">
+
+    <resultMap type="com.slice.pojo.entity.Comment" id="CommentMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="maxX" column="max_x" jdbcType="DOUBLE"/>
+        <result property="maxY" column="max_y" jdbcType="DOUBLE"/>
+        <result property="minX" column="min_x" jdbcType="DOUBLE"/>
+        <result property="minY" column="min_y" jdbcType="DOUBLE"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="sliceId" column="slice_id" jdbcType="INTEGER"/>
+        <result property="json" column="json" javaType="com.alibaba.fastjson.JSONObject" jdbcType="OTHER"
+                typeHandler="com.slice.utils.JsonTypeHandler"/>
+    </resultMap>
+
+    
+    <!--查询单个-->
+    <select id="queryById" resultMap="CommentMap">
+        select *
+        from comment
+        where id = #{id}
+    </select>
+    <select id="queryBySId" resultType="com.slice.pojo.entity.Comment">
+        select *
+        from comment
+        where slice_id = #{sliceId}
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into comment(content, json, max_x, max_y, min_x, min_y, slice_id, type)
+        values
+            (#{content},#{json},#{maxX},#{maxY},#{minX},#{minY},#{sliceId},#{type})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into comment(contentjsonmax_xmax_ymin_xmin_yslice_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.content}#{entity.json}#{entity.maxX}#{entity.maxY}#{entity.minX}#{entity.minY}#{entity.sliceId})
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update comment
+        <set>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="json != null">
+                json = #{json},
+            </if>
+            <if test="maxX != null">
+                max_x = #{maxX},
+            </if>
+            <if test="maxY != null">
+                max_y = #{maxY},
+            </if>
+            <if test="minX != null">
+                min_x = #{minX},
+            </if>
+            <if test="minY != null">
+                min_y = #{minY},
+            </if>
+            <if test="sliceId != null">
+                slice_id = #{sliceId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from comment where id = #{id}
+    </delete>
+
+</mapper>
+
+
