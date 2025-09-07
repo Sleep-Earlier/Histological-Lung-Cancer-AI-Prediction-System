@@ -43,7 +43,7 @@
 
 ![image](assets/fig9.png)  
 
-[10] Example: asking *“What is the most common EGFR mutation?”* will return relevant explanations and clinical insights.  
+[10] Example: asking *“What is the EGFR mutation in lung cancer”* will return relevant explanations and clinical insights.  
 
 ![image](assets/fig10.png)  
 

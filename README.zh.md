@@ -1,3 +1,5 @@
+**Language / 语言**: [English](README.md) | [中文](README.zh.md)
+
 # 组织学肺癌 EGFR 人工智能预测系统 
 
 ---
@@ -40,7 +42,7 @@
 
 ![image](assets/fig9.png)  
 
-[10] 示例：用户输入“最常见的EGFR突变是什么？”，系统将返回解释和临床意义。  
+[10] 示例：用户输入“什么是肺癌的EGFR突变”，系统将返回解释和临床意义。  
 
 ![image](assets/fig10.png)  
 
